@@ -1,7 +1,7 @@
 // Este é um teste super simples para a nossa aula de CI/CD
 // Em um projeto real, aqui teríamos testes unitários usando Jest, Mocha, etc.
 
-const myFeature = "Minha primeira Aula de CI/CD";
+const myFeature = "Aula de CI/CD";
 
 if (myFeature.includes("CI/CD")) {
     console.log("TESTE PASSOU: A string 'CI/CD' foi encontrada.");
