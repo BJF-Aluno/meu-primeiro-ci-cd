@@ -1,0 +1,10 @@
+name: CI/CD do Front-Endon:push:branches:- mainpull_request:branches:- mainjobs:build-and-test:runs-on: ubuntu-lateststeps:- name: Checkout do códigouses: actions/checkout@v2  - name: Configurar Node.js
+    uses: actions/setup-node@v2
+    with:
+      node-version: '14'
+  
+  - name: Instalar dependências
+    run: npm install
+
+  - name: Rodar testes
+    run: node ci-test.js
