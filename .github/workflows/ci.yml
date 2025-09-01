@@ -1,24 +1,75 @@
-name: CI do Front-End
+# Este é o nome do seu fluxo de trabalho, que aparece na aba "Actions" do GitHub.
+name: CI/CD
 
+# Define os eventos que irão acionar este pipeline.
 on:
+  # O pipeline é acionado quando um push é feito.
   push:
+    # ... mas apenas se for para a branch 'main'.
     branches:
       - main
+  # O pipeline também é acionado quando um pull request é feito ou atualizado.
   pull_request:
+    # ... apenas se o pull request for para a branch 'main'.
     branches:
       - main
 
+# Define as tarefas (jobs) que serão executadas.
 jobs:
+  # ---
+  # Job de CI (Integração Contínua)
+  # Este job é responsável por construir e testar seu código.
   build-and-test:
+    # O ambiente de execução para este job será uma máquina virtual com Ubuntu.
     runs-on: ubuntu-latest
+    # Define a sequência de passos para o job.
     steps:
+      # Primeiro passo: baixa o código do seu repositório para a máquina virtual.
       - name: Checkout do código
         uses: actions/checkout@v2
 
+      # Segundo passo: instala o Node.js para que possamos rodar o teste.
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          # Especifica a versão do Node.js a ser utilizada.
+          node-version: '14'
+
+      # Terceiro passo: executa seu script de teste.
+      - name: Rodar testes
+        run: node ci-test.js
+
+  # ---
+  # Job de CD (Entrega Contínua)
+  # Este job é responsável por implantar a aplicação.
+  deploy:
+    # A dependência "needs" garante que este job só rodará se o job "build-and-test" for bem-sucedido.
+    needs: build-and-test
+    # O ambiente de execução para este job também será uma máquina virtual com Ubuntu.
+    runs-on: ubuntu-latest
+    # A condição "if" garante que o deploy só ocorrerá se a alteração for na branch 'main'.
+    if: github.ref == 'refs/heads/main'
+    # Define a sequência de passos para o job.
+    steps:
+      # Baixa o código novamente para a máquina virtual para a implantação.
+      - name: Checkout do código
+        uses: actions/checkout@v2
+
+      # Configura o Node.js novamente, necessário para a implantação.
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      
-      - name: Rodar testes
-        run: node ci-test.js
+
+      # Instala as dependências do projeto (um passo comum, mas opcional neste caso).
+      - name: Instalar dependências
+        run: npm install
+
+      # O passo de implantação, usando uma ação de terceiros para o GitHub Pages.
+      - name: Implantação com GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # Usa o token de segurança gerado automaticamente pelo GitHub.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Indica que a pasta a ser publicada é a raiz do seu projeto.
+          publish_dir: ./
