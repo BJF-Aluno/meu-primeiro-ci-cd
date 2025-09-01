@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BJF-Aluno/meu-primeiro-ci-cd.git"
+    "url": "git+https://github.com/BJF-Aluno/meuprimeiro1.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BJF-Aluno/meu-primeiro-ci-cd/issues"
+    "url": "https://github.com/BJF-Aluno/meuprimeiro1/issues"
   },
-  "homepage": "https://github.com/BJF-Aluno/meu-primeiro-ci-cd#readme"
+  "homepage": "https://github.com/BJF-Aluno/meuprimeiro1#readme"
 }
